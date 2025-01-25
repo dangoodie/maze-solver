@@ -54,6 +54,6 @@ class Cell:
         self._win.draw_line(Line(this_centre, to_centre), fill_color)
 
     def _find_centre_point(self) -> Point:
-        x = (self._x2 - self._x1) / 2 + self._x1 
-        y = (self._y2 - self._y1) / 2 + self._y1
+        x = abs((self._x2 - self._x1)) // 2 + self._x1 
+        y = abs((self._y2 - self._y1)) // 2 + self._y1
         return Point(x, y)
