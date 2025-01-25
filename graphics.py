@@ -4,6 +4,9 @@ class Point:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+    
+    def __repr__(self):
+        return f"x: {self.x} y: {self.y}"
 
 class Line:
     def __init__(self, point1: Point, point2: Point):
@@ -38,5 +41,5 @@ class Window:
     def close(self):
         self.__running = False
 
-    def draw_line(self, line: Line, fill_color):
+    def draw_line(self, line: Line, fill_color="black"):
         line.draw(self.__canvas, fill_color)
