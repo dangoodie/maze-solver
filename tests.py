@@ -52,6 +52,18 @@ class Tests(unittest.TestCase):
         # Test edge case where rows and columns are zero
         m1 = Maze(0, 0, 0, 0, 10, 10)
         self.assertEqual(len(m1._cells), 0)
+    
+    def test_reset_visited(self):
+        # Test that all cells are reset to not visited
+        m1 = Maze(0, 0, 3, 3, 10, 10)
+        for i in range(3):
+            for j in range(3):
+                m1._cells[i][j].visited = True
+        m1._reset_cells_visited()
+        for i in range(3):
+            for j in range(3):
+                self.assertFalse(m1._cells[i][j].visited)
+
 
 if __name__ == "__main__":
     unittest.main()
