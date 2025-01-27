@@ -9,7 +9,7 @@ def main():
     num_cols = 14
     cell_size_x = 50
     cell_size_y = 50
-    m = Maze(x1, y1, num_rows, num_cols, cell_size_x, cell_size_y win)
+    m = Maze(x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win)
     solvable = m.solve()
     if solvable:
         print("Solvable!")
