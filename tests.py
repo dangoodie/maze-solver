@@ -53,7 +53,7 @@ class Tests(unittest.TestCase):
         m1 = Maze(0, 0, 0, 0, 10, 10)
         self.assertEqual(len(m1._cells), 0)
     
-    def test_reset_visited(self):
+    def test_reset_cells_visited(self):
         # Test that all cells are reset to not visited
         m1 = Maze(0, 0, 3, 3, 10, 10)
         for i in range(3):

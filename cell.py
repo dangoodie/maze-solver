@@ -44,9 +44,6 @@ class Cell:
         
         this_centre = self._find_centre_point()
         to_centre = to_cell._find_centre_point()
-        print(this_centre)
-        print(to_centre)
-        print(fill_color)
 
         self._win.draw_line(Line(this_centre, to_centre), fill_color)
 
