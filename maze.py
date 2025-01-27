@@ -76,44 +76,48 @@ class Maze:
         self._animate()
 
     def _break_walls_r(self, i, j):
-        self._cells[i][j].visited = True
+    self._cells[i][j].visited = True
 
-        while True:
-            to_visit = []
+    while True:
+        to_visit = []
 
-            # Check neighbors and ensure indices are within bounds
-            if j > 0 and not self._cells[i][j - 1].visited:  # Above
-                to_visit.append((i, j - 1))
-            if j < self._num_rows - 1 and not self._cells[i][j + 1].visited:  # Below
-                to_visit.append((i, j + 1))
-            if i > 0 and not self._cells[i - 1][j].visited:  # Left
-                to_visit.append((i - 1, j))
-            if i < self._num_cols - 1 and not self._cells[i + 1][j].visited:  # Right
-                to_visit.append((i + 1, j))
+        # Check neighbors and ensure indices are within bounds
+        if j > 0 and not self._cells[i][j - 1].visited:  # Above (same column, row decreases)
+            to_visit.append((i, j - 1))
+        if j < self._num_rows - 1 and not self._cells[i][j + 1].visited:  # Below (same column, row increases)
+            to_visit.append((i, j + 1))
+        if i > 0 and not self._cells[i - 1][j].visited:  # Left (column decreases, same row)
+            to_visit.append((i - 1, j))
+        if i < self._num_cols - 1 and not self._cells[i + 1][j].visited:  # Right (column increases, same row)
+            to_visit.append((i + 1, j))
 
-            if not to_visit:
-                # No more neighbors to visit, backtrack
-                self._draw_cell(i, j)
-                return
+        if not to_visit:
+            # No more neighbors to visit, backtrack
+            self._draw_cell(i, j)
+            return
 
-            # Pick a random neighbor
-            r_cell = to_visit[random.randint(0, len(to_visit) - 1)]
+        # Pick a random neighbor
+        r_cell = to_visit[random.randint(0, len(to_visit) - 1)]
 
-            # Break walls between current cell and the chosen neighbor
-            if i == r_cell[0]:  # Same row
-                if j < r_cell[1]:  # Neighbor is below
-                    self._cells[i][j].has_bottom_wall = False
-                    self._cells[r_cell[0]][r_cell[1]].has_top_wall = False
-                else:  # Neighbor is above
-                    self._cells[i][j].has_top_wall = False
-                    self._cells[r_cell[0]][r_cell[1]].has_bottom_wall = False
-            else:  # Same column
-                if i < r_cell[0]:  # Neighbor is to the right
-                    self._cells[i][j].has_right_wall = False
-                    self._cells[r_cell[0]][r_cell[1]].has_left_wall = False
-                else:  # Neighbor is to the left
-                    self._cells[i][j].has_left_wall = False
-                    self._cells[r_cell[0]][r_cell[1]].has_right_wall = False
+        # Break walls between current cell and the chosen neighbor
+        self._remove_walls_between(i, j, r_cell[0], r_cell[1])
 
-            # Recurse into the chosen neighbor
-            self._break_walls_r(r_cell[0], r_cell[1])
+        # Recurse into the chosen neighbor
+        self._break_walls_r(r_cell[0], r_cell[1])
+
+
+    def _remove_walls_between(self, i, j, ni, nj):
+    if i == ni:  # Same column
+        if j < nj:  # Neighbor is below
+            self._cells[i][j].has_bottom_wall = False
+            self._cells[ni][nj].has_top_wall = False
+        else:  # Neighbor is above
+            self._cells[i][j].has_top_wall = False
+            self._cells[ni][nj].has_bottom_wall = False
+    elif j == nj:  # Same row
+        if i < ni:  # Neighbor is to the right
+            self._cells[i][j].has_right_wall = False
+            self._cells[ni][nj].has_left_wall = False
+        else:  # Neighbor is to the left
+            self._cells[i][j].has_left_wall = False
+            self._cells[ni][nj].has_right_wall = False
