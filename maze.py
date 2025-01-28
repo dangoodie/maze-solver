@@ -1,8 +1,11 @@
 import time
 import random
+from typing import TYPE_CHECKING
 
 from cell import Cell
-from graphics import Window
+
+if TYPE_CHECKING:
+    from graphics import Window
 
 
 class Maze:
@@ -14,7 +17,7 @@ class Maze:
         num_cols: int,
         cell_size_x: int,
         cell_size_y: int,
-        win: Window = None,
+        win: "Window" = None,
         seed=None
     ):
         self._x1 = x1
@@ -149,8 +152,8 @@ class Maze:
 
         # above
         if (j > 0
-                and not self._cells[i][j].has_top_wall
-                and not self._cells[i][j - 1].visited
+                    and not self._cells[i][j].has_top_wall
+                    and not self._cells[i][j - 1].visited
                 ):
             self._cells[i][j].draw_move(self._cells[i][j - 1])
             if self._solve_r(i, j - 1):
@@ -160,9 +163,9 @@ class Maze:
 
         # below
         if (j < self._num_rows - 1
-                and not self._cells[i][j].has_bottom_wall
-                and not self._cells[i][j + 1].visited
-            ):
+                    and not self._cells[i][j].has_bottom_wall
+                    and not self._cells[i][j + 1].visited
+                ):
             self._cells[i][j].draw_move(self._cells[i][j + 1])
             if self._solve_r(i, j + 1):
                 return True
@@ -171,8 +174,8 @@ class Maze:
 
         # left
         if (i > 0
-                and not self._cells[i][j].has_left_wall
-                and not self._cells[i - 1][j].visited
+                    and not self._cells[i][j].has_left_wall
+                    and not self._cells[i - 1][j].visited
                 ):
             self._cells[i][j].draw_move(self._cells[i - 1][j])
             if self._solve_r(i - 1, j):
@@ -182,8 +185,8 @@ class Maze:
 
         # right
         if (i < self._num_cols - 1
-                and not self._cells[i][j].has_right_wall
-                and not self._cells[i + 1][j].visited
+                    and not self._cells[i][j].has_right_wall
+                    and not self._cells[i + 1][j].visited
                 ):
             self._cells[i][j].draw_move(self._cells[i + 1][j])
             if self._solve_r(i + 1, j):
