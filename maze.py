@@ -7,16 +7,16 @@ from graphics import Window
 
 class Maze:
     def __init__(
-            self,
-            x1: int,
-            y1: int,
-            num_rows: int,
-            num_cols: int,
-            cell_size_x: int,
-            cell_size_y: int,
-            win=None,
-            seed=None
-        ):
+        self,
+        x1: int,
+        y1: int,
+        num_rows: int,
+        num_cols: int,
+        cell_size_x: int,
+        cell_size_y: int,
+        win: Window = None,
+        seed=None
+    ):
         self._x1 = x1
         self._y1 = y1
         self._num_rows = num_rows
@@ -62,6 +62,9 @@ class Maze:
         time.sleep(0.05)
 
     def _break_entrance_and_exit(self):
+        if self._win is None:
+            return
+
         # top left
         self._cells[0][0].has_top_wall = False
         self._draw_cell(0, 0)
@@ -75,19 +78,26 @@ class Maze:
         self._animate()
 
     def _break_walls_r(self, i, j):
+        if i < 0 or i >= self._num_cols or j < 0 or j >= self._num_rows:
+            return
+
         self._cells[i][j].visited = True
 
         while True:
             to_visit = []
 
             # Check neighbors and ensure indices are within bounds
-            if j > 0 and not self._cells[i][j - 1].visited:  # Above (same column, row decreases)
+            # Above (same column, row decreases)
+            if j > 0 and not self._cells[i][j - 1].visited:
                 to_visit.append((i, j - 1))
-            if j < self._num_rows - 1 and not self._cells[i][j + 1].visited:  # Below (same column, row increases)
+            # Below (same column, row increases)
+            if j < self._num_rows - 1 and not self._cells[i][j + 1].visited:
                 to_visit.append((i, j + 1))
-            if i > 0 and not self._cells[i - 1][j].visited:  # Left (column decreases, same row)
+            # Left (column decreases, same row)
+            if i > 0 and not self._cells[i - 1][j].visited:
                 to_visit.append((i - 1, j))
-            if i < self._num_cols - 1 and not self._cells[i + 1][j].visited:  # Right (column increases, same row)
+            # Right (column increases, same row)
+            if i < self._num_cols - 1 and not self._cells[i + 1][j].visited:
                 to_visit.append((i + 1, j))
 
             if not to_visit:
@@ -130,18 +140,18 @@ class Maze:
 
     def solve(self):
         return self._solve_r(0, 0)
-    
+
     def _solve_r(self, i, j):
         self._animate()
         self._cells[i][j].visited = True
         if i == self._num_cols - 1 and j == self._num_rows - 1:
             return True
-        
+
         # above
-        if (j > 0 
-            and not self._cells[i][j].has_top_wall 
-            and not self._cells[i][j - 1].visited
-        ):
+        if (j > 0
+                and not self._cells[i][j].has_top_wall
+                and not self._cells[i][j - 1].visited
+                ):
             self._cells[i][j].draw_move(self._cells[i][j - 1])
             if self._solve_r(i, j - 1):
                 return True
@@ -149,10 +159,10 @@ class Maze:
                 self._cells[i][j].draw_move(self._cells[i][j - 1], undo=True)
 
         # below
-        if (j < self._num_rows - 1 
-            and not self._cells[i][j].has_bottom_wall 
-            and not self._cells[i][j + 1].visited
-        ):
+        if (j < self._num_rows - 1
+                and not self._cells[i][j].has_bottom_wall
+                and not self._cells[i][j + 1].visited
+            ):
             self._cells[i][j].draw_move(self._cells[i][j + 1])
             if self._solve_r(i, j + 1):
                 return True
@@ -160,10 +170,10 @@ class Maze:
                 self._cells[i][j].draw_move(self._cells[i][j + 1], undo=True)
 
         # left
-        if (i > 0 
-            and not self._cells[i][j].has_left_wall 
-            and not self._cells[i - 1][j].visited
-        ):
+        if (i > 0
+                and not self._cells[i][j].has_left_wall
+                and not self._cells[i - 1][j].visited
+                ):
             self._cells[i][j].draw_move(self._cells[i - 1][j])
             if self._solve_r(i - 1, j):
                 return True
@@ -171,10 +181,10 @@ class Maze:
                 self._cells[i][j].draw_move(self._cells[i - 1][j], undo=True)
 
         # right
-        if (i < self._num_cols - 1 
-            and not self._cells[i][j].has_right_wall 
-            and not self._cells[i + 1][j].visited
-        ):
+        if (i < self._num_cols - 1
+                and not self._cells[i][j].has_right_wall
+                and not self._cells[i + 1][j].visited
+                ):
             self._cells[i][j].draw_move(self._cells[i + 1][j])
             if self._solve_r(i + 1, j):
                 return True
@@ -182,4 +192,3 @@ class Maze:
                 self._cells[i][j].draw_move(self._cells[i + 1][j], undo=True)
 
         return False
-

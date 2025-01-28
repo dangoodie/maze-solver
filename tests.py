@@ -16,7 +16,7 @@ class Tests(unittest.TestCase):
             len(m1._cells[0]),
             num_rows,
         )
-    
+
     def test_maze_cell_coordinates(self):
         num_cols = 2
         num_rows = 2
@@ -52,7 +52,7 @@ class Tests(unittest.TestCase):
         # Test edge case where rows and columns are zero
         m1 = Maze(0, 0, 0, 0, 10, 10)
         self.assertEqual(len(m1._cells), 0)
-    
+
     def test_reset_cells_visited(self):
         # Test that all cells are reset to not visited
         m1 = Maze(0, 0, 3, 3, 10, 10)

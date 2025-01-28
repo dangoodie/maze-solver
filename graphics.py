@@ -1,12 +1,14 @@
 from tkinter import Tk, BOTH, Canvas
 
+
 class Point:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-    
+
     def __repr__(self):
         return f"x: {self.x} y: {self.y}"
+
 
 class Line:
     def __init__(self, point1: Point, point2: Point):
@@ -14,16 +16,16 @@ class Line:
         self.point2 = point2
 
     def draw(self, canvas: Canvas, fill_color: str):
-        canvas.create_line(self.point1.x, self.point1.y, self.point2.x, self.point2.y, fill=fill_color, width=2)
-
-
+        canvas.create_line(self.point1.x, self.point1.y,
+                           self.point2.x, self.point2.y, fill=fill_color, width=2)
 
 
 class Window:
     def __init__(self, width, height):
         self.__root = Tk()
         self.__root.title("Maze Solver")
-        self.__canvas = Canvas(self.__root, bg="white", width=width, height=height)
+        self.__canvas = Canvas(self.__root, bg="white",
+                               width=width, height=height)
         self.__canvas.pack(fill=BOTH, expand=1)
         self.__running = False
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
